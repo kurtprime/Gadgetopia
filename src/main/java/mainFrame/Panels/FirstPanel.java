@@ -108,11 +108,6 @@ private void MainPanel() {
 		buttomSide.setLayout(null);
 		buttomSide.setBounds(75,620,1150,50);
 		buttomSide.setOpaque(false);
-	
-		
-		
-		
-		
 		
 		layer.setBounds(0,0,width,height);
 		layer.add(label, Integer.valueOf(0));
@@ -126,12 +121,12 @@ private void MainPanel() {
     	
 		this.add(layer);
 		// Remove after done editing in second panel	
-		
+		/*
 		PANEL().removeAll();
     	PANEL().add(new SecondPanel());
     	PANEL().revalidate();
     	PANEL().repaint();
-    	
+    	*/
     	// 
     	
 	}

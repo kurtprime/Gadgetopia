@@ -8,6 +8,8 @@ import mainFrame.Panels.Methdos.RoundedLines;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -15,13 +17,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class Login extends JPanel {
-
     MongoDB acc = new MongoDB();
     List<Account> accounts = acc.getAccounts();
+    private Account account;
     public JTextField nameField = null;
     private boolean found = false;
-
-
+    private String userName = null;
+    JLabel loginbtn;
 
     public Login(){
         login();
@@ -97,7 +99,6 @@ public class Login extends JPanel {
 
             }
         });
-
         JLabel Agreement = new JLabel("<html><p>REMEMBER ME</p></html>", SwingConstants.RIGHT);
         Agreement.setBounds(70, 290, 120, 22);
         Agreement.setFont(setFontSherif(13));
@@ -113,18 +114,17 @@ public class Login extends JPanel {
         forgetPass.setFont(setFontSherif(13));
         forgetPass.setOpaque(false);
 
-        JLabel loginbtn = btn("LOGIN", 100, 29, setFontSGlacial_BOLD(27));
-        loginbtn.setBounds(90, 330, 240, 40);
-        loginbtn.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 6));
-        loginbtn.setBackground(new Color(0x61627B));
-        loginbtn.setForeground(new Color(0x61627B));
-
-        JLabel invalidInput = new JLabel("<html><p style=\"color: #E80816\">INVALID INPUT</p></html>", SwingConstants.CENTER);
-        invalidInput.setBounds(80, 210, 128, 22);
+        JLabel invalidInput = new JLabel("<html><p style=\"color: #E80816\">*INVALID INPUT</p></html>", SwingConstants.CENTER);
+        invalidInput.setBounds(90, 209, 128, 22);
         invalidInput.setFont(setFontSherif(8));
         invalidInput.setOpaque(false);
         invalidInput.setVisible(false);
 
+        loginbtn = btn("LOGIN", 100, 29, setFontSGlacial_BOLD(27));
+        loginbtn.setBounds(90, 330, 240, 40);
+        loginbtn.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 6));
+        loginbtn.setBackground(new Color(0x61627B));
+        loginbtn.setForeground(new Color(0x61627B));
 
         loginbtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -135,20 +135,17 @@ public class Login extends JPanel {
                     String p = String.valueOf(passwordField.getPassword());
                     boolean available = nameField.getText().equals(accounts.get(i).getUsername()) && p.equals(accounts.get(i).getPassword());
                     if(available){
-                        System.out.println("TRUE");
                         JOptionPane.showMessageDialog(pane(), "ON PROGRESS pa wait po ma'am",
                                 "On progress",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        found = true;
-
+                        account = accounts.get(i);
                         break;
-                    } else {
-                        found = false;
-                        //mainFrame.dispose();
                     }
                 }
-                if(i++ == accountLength ) {
+                if(i++ == accountLength) {
                     invalidInput.setVisible(true);
+                    found =true;
+                    account = null;
                 }
             }
         });
@@ -165,6 +162,15 @@ public class Login extends JPanel {
     public boolean isFound(){
         return found;
     }
+
+    public JLabel getLoginbtn(){
+        return loginbtn;
+    }
+
+    public Account getData (){
+        return account;
+    }
+
     private JLabel btn(String t, int x, int y, Font fnt) {
         RoundedLabel btn = new RoundedLabel("",40);
         JLabel text = new JLabel(t);
@@ -180,7 +186,6 @@ public class Login extends JPanel {
 
         return btn;
     }
-
 
     private Font setFontSherif(float fontSize) {
         Font FontSherif;
@@ -212,4 +217,5 @@ public class Login extends JPanel {
             return new Font("Arial", Font.PLAIN, (int) fontSize);
         }
     }
+
 }

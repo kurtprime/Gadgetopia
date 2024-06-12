@@ -191,6 +191,7 @@ public class SignUp extends JPanel {
         return btn;
     }
 
+
     private Font setFontSherif(float fontSize) {
         Font FontSherif;
         try {

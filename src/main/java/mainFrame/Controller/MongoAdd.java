@@ -20,6 +20,10 @@ public class MongoAdd {
 
     List<Account> accounts = new ArrayList<>();
     String uri = "mongodb+srv://kurtquejada:mLSQY9y1Zl1CmtLj@cluster0.nzqbdss.mongodb.net/";
+    private String username;
+    private String name;
+    private String email;
+    private String password;
 
     public MongoAdd(){
         MongoController();
@@ -34,10 +38,10 @@ public class MongoAdd {
                 // Inserts a sample document describing a movie into the collection
                 InsertOneResult result = collection.insertOne(new Document()
                         .append("_id", new ObjectId())
-                        .append("username", "Ski Bloopers")
-                        .append("name", "Kiana Reaves")
-                        .append("email", "kurt@gmail.com")
-                        .append("password", "pasword")
+                        .append("username", username)
+                        .append("name", name)
+                        .append("email", email)
+                        .append("password", password)
                         .append("cart", emptyList())
                 );
                 // Prints the ID of the inserted document
