@@ -28,7 +28,9 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		frame();
 	}
-	
+
+	public MainFrame(String s){}
+
 	private void  frame()  {
 		this.setTitle("GADGETOPIA");
 		this.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
@@ -49,6 +51,8 @@ public class MainFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-
+	public static JFrame getMainFrame(){
+        return new MainFrame();
+	}
 
 }

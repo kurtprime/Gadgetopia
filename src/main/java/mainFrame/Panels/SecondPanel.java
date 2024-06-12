@@ -16,15 +16,9 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
+import mainFrame.Controller.Objects.Account;
 import mainFrame.Panels.Methdos.*;
 import mainFrame.Panels.SubPanels.Login;
 import mainFrame.Panels.SubPanels.SignUp;
@@ -33,6 +27,8 @@ import mainFrame.Panels.navigations.Contacts;
 import mainFrame.Panels.navigations.Homes;
 import mainFrame.Panels.navigations.OutputBody;
 import mainFrame.Panels.navigations.Overview;
+
+import static java.lang.System.err;
 
 
 public class SecondPanel extends JLayeredPane {
@@ -54,36 +50,30 @@ public class SecondPanel extends JLayeredPane {
 	
 	JButton LogIn;
 	JButton SignIn;
-	public SecondPanel() {
-		Size();
-		
 
-		
-		this.add(backgroundImage, Integer.valueOf(0));
-		this.add(Header(), Integer.valueOf(1));
-		this.add(searchField(), Integer.valueOf(2));
-		this.add(SignInLogIn(), Integer.valueOf(2));
-		
-		
-		this.add(body,Integer.valueOf(1));
-		
-		//
-		/*
-		ImageIcon icon = new ImageIcon(new ImageIcon("Images/contacts.png").getImage().getScaledInstance(1200, 695, Image.SCALE_SMOOTH));
-		backgroundImage.setIcon(icon);
-		outputBody.add(contactBody);
-		*/
-		//
-		
-		this.setVisible(true);
+	private JComponent username;
+	private Account account;
+
+	public SecondPanel() {
+		username = SignInLogIn();
+		account = null;
+		Size();
+	}
+	public SecondPanel(String username, Account account){
+		this.username = userName(username);
+		this.account = account;
 	}
 	
 	private void Size(){
 		this.setLayout(null);
 		this.setBounds(0,0,WIDTH,HEIGHT);
-		
-		
-		
+		this.removeAll();
+		this.add(backgroundImage, Integer.valueOf(0));
+		this.add(Header(), Integer.valueOf(1));
+		this.add(searchField(), Integer.valueOf(2));
+		this.add(username, Integer.valueOf(2));
+		this.add(body,Integer.valueOf(1));
+		this.setVisible(true);
 	}
 	
 	private JLayeredPane body() {
@@ -93,12 +83,13 @@ public class SecondPanel extends JLayeredPane {
 		body.setBackground(Color.red);
 		body.setLayout(null);
 		
+		outputBody.removeAll();
 		outputBody.add(homeBody);
 		body.add(outputBody, Integer.valueOf(1));
 		body.add(NavBar(), Integer.valueOf(1));
 		body.add(NavBarBTN(), Integer.valueOf(2));
 		body.add(UserInfo(), Integer.valueOf(1));
-		
+
 		return body;
 	}
 	
@@ -131,10 +122,25 @@ public class SecondPanel extends JLayeredPane {
 		
 		return label;
 	}
-	
+
+	private JLabel userName(String s){
+
+		JLabel label = new JLabel("@"+s);
+		final int FONT_SIZE = 22;
+
+		label.setOpaque(false);
+		label.setFont(setFontSGlacial(FONT_SIZE));
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(new Color(0xFFFFFF));
+		label.setBounds(960,15,200,45);
+
+		return label;
+	}
+
 	private JLabel SignInLogIn() {
 		JLabel label = new JLabel("|");
-		
+		JPanel LoginPane = LoginPane();
+
 		final int FONT_SIZE = 22;
 		
 		SignIn = new JButton("SIGN UP");
@@ -200,6 +206,7 @@ public class SecondPanel extends JLayeredPane {
             		LogIn.setOpaque(false);
             		SignIn.setOpaque(false);
             		
+            		PANE().revalidate();
             		body.revalidate();
             		body.repaint();
             		
@@ -211,39 +218,34 @@ public class SecondPanel extends JLayeredPane {
     		backgroundImage.setIcon(icon);
     		backgroundImage.setBounds(0,-21,1215,734);
     		backgroundImage.revalidate();
-    		
+
     		SignIn.setOpaque(false);
     		SignIn.repaint();
-    		
+
     		LogIn.setOpaque(true);
     		LogIn.repaint();
-    		
-    		
+
     		body.removeAll();
 			JLabel backBtn = btn("BACK",50,25, setFontSGlacial(20));
 			backBtn.setBounds(50,530,180,40);
 			body.add(backBtn);
 			body.add(url());
-			body.add(LoginPane(), Integer.valueOf(1));
+
+			body.add(LoginPane, Integer.valueOf(1));
 			backBtn.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					PANE().remove(body);
-
 					body = body();
 					PANE().add(body,Integer.valueOf(1));
-
 					ImageIcon icon = new ImageIcon(new ImageIcon("Images/Background-second.png").getImage().getScaledInstance(1200, 700, Image.SCALE_SMOOTH));
 					backgroundImage.setIcon(icon);
 					backgroundImage.setBounds(0,-15,1215,734);
 					backgroundImage.revalidate();
-
 					LogIn.setOpaque(false);
 					SignIn.setOpaque(false);
-
 					body.revalidate();
 					body.repaint();
-
 				}});
 
 		});
@@ -256,8 +258,6 @@ public class SecondPanel extends JLayeredPane {
 		label.setForeground(new Color(0xFFFFFF));
 		label.setBounds(960,15,200,45);
 
-		
-		
 		return label;
 	}
 
@@ -521,9 +521,6 @@ public class SecondPanel extends JLayeredPane {
         		outputBody.add(overviewBody);
             	outputBody.revalidate();
             	outputBody.repaint();
-
-        		
-        		
             }});
 		
 		//ACTIONS
@@ -617,6 +614,7 @@ public class SecondPanel extends JLayeredPane {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private Font setFontSherif(float fontSize) {
 		Font FontSherif;
 		try {
@@ -627,8 +625,7 @@ public class SecondPanel extends JLayeredPane {
 		    
 		    return FontSherif;
 		} catch (FontFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println(e);
+            // TODO Auto-generated catch block
 			return new Font("Arial", Font.PLAIN,(int) fontSize);
 		}
 	}
@@ -665,5 +662,5 @@ public class SecondPanel extends JLayeredPane {
 		}
 		
 	}
-	
+
 }

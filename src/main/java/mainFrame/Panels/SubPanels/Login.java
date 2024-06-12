@@ -18,6 +18,10 @@ public class Login extends JPanel {
 
     MongoDB acc = new MongoDB();
     List<Account> accounts = acc.getAccounts();
+    public JTextField nameField = null;
+    private boolean found = false;
+
+
 
     public Login(){
         login();
@@ -44,7 +48,7 @@ public class Login extends JPanel {
 
         RoundedLines name = new RoundedLines("", 45);
         name.setBounds(70, 170, 270, 45);
-        JTextField nameField = new JTextField();
+        nameField = new JTextField();
         nameField.setPreferredSize(new Dimension(200, 35));
         nameField.setOpaque(false);
         nameField.setBorder(null);
@@ -115,10 +119,19 @@ public class Login extends JPanel {
         loginbtn.setBackground(new Color(0x61627B));
         loginbtn.setForeground(new Color(0x61627B));
 
+        JLabel invalidInput = new JLabel("<html><p style=\"color: #E80816\">INVALID INPUT</p></html>", SwingConstants.CENTER);
+        invalidInput.setBounds(80, 210, 128, 22);
+        invalidInput.setFont(setFontSherif(8));
+        invalidInput.setOpaque(false);
+        invalidInput.setVisible(false);
+
+
         loginbtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                for (int i = 0; i < accounts.toArray().length; i++) {
+                int accountLength = accounts.toArray().length;
+                int i = 0;
+                for (i = 0; i < accountLength; i++) {
                     String p = String.valueOf(passwordField.getPassword());
                     boolean available = nameField.getText().equals(accounts.get(i).getUsername()) && p.equals(accounts.get(i).getPassword());
                     if(available){
@@ -126,15 +139,21 @@ public class Login extends JPanel {
                         JOptionPane.showMessageDialog(pane(), "ON PROGRESS pa wait po ma'am",
                                 "On progress",
                                 JOptionPane.INFORMATION_MESSAGE);
-                        break;
-                    }
+                        found = true;
 
+                        break;
+                    } else {
+                        found = false;
+                        //mainFrame.dispose();
+                    }
+                }
+                if(i++ == accountLength ) {
+                    invalidInput.setVisible(true);
                 }
             }
-
         });
 
-
+        this.add(invalidInput);
         this.add(forgetPass);
         this.add(Agreement);
         this.add(loginbtn);
@@ -143,7 +162,9 @@ public class Login extends JPanel {
         this.add(signUpLabel);
         this.add(createTitle);
     }
-
+    public boolean isFound(){
+        return found;
+    }
     private JLabel btn(String t, int x, int y, Font fnt) {
         RoundedLabel btn = new RoundedLabel("",40);
         JLabel text = new JLabel(t);
@@ -159,6 +180,7 @@ public class Login extends JPanel {
 
         return btn;
     }
+
 
     private Font setFontSherif(float fontSize) {
         Font FontSherif;

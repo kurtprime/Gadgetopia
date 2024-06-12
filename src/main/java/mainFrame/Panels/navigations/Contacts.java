@@ -2,14 +2,21 @@ package mainFrame.Panels.navigations;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -113,18 +120,77 @@ public class Contacts extends JPanel {
 		icon = new ImageIcon(new ImageIcon("Images/fb.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH));
 		fb.setIcon(icon);
 		fb.setPreferredSize(new Dimension(45,45));
+		fb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
 		JLabel insta = new JLabel();
 		icon = new ImageIcon(new ImageIcon("Images/insta.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH));
 		insta.setIcon(icon);
 		insta.setPreferredSize(new Dimension(45,45));
+		insta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
 		JLabel twt = new JLabel();
 		icon = new ImageIcon(new ImageIcon("Images/x.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH));
 		twt.setIcon(icon);
 		twt.setPreferredSize(new Dimension(45,45));
+		twt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
 		JLabel tiktok = new JLabel();
 		icon = new ImageIcon(new ImageIcon("Images/tiktok.png").getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH));
 		tiktok.setIcon(icon);
 		tiktok.setPreferredSize(new Dimension(45,45));
+		tiktok.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		fb.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	URI uri = null;
+				try {
+					uri = new URL("https://www.facebook.com/princessjoy.lumbre").toURI();
+				} catch (MalformedURLException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	        	openWebpage(uri);
+	         }
+	     });
+		
+		insta.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	URI uri = null;
+				try {
+					uri = new URL("https://www.instagram.com/hesennyyy").toURI();
+				} catch (MalformedURLException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	        	openWebpage(uri);
+	         }
+	     });
+		
+		twt.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	URI uri = null;
+				try {
+					uri = new URL("https://x.com/taizi_dianxiahc").toURI();
+				} catch (MalformedURLException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	        	openWebpage(uri);
+	         }
+	     });
+		
+		tiktok.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	        	URI uri = null;
+				try {
+					uri = new URL("https://www.tiktok.com/@spbunny07/video/7371774536141884678?is_from_webapp=1&sender_device=pc").toURI();
+				} catch (MalformedURLException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	        	openWebpage(uri);
+	         }
+	     });
 		
 		socials.add(fb);
 		socials.add(insta);
@@ -137,7 +203,7 @@ public class Contacts extends JPanel {
 		this.add(Email);
 		this.add(Location);
 		this.add(url());
-		this.add(contactUs);
+		this.add(contactUs);;
 	}
 	
 	private JPanel sendMessage() {
@@ -224,6 +290,28 @@ public class Contacts extends JPanel {
 		url.setBounds(80,450, 200,20);
 		url.setForeground(new Color(0xE8EAEE));
 		return url;
+	}
+	
+	public boolean openWebpage(URI uri) {
+	    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+	        try {
+	            desktop.browse(uri);
+	            return true;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return false;
+	}
+
+	public boolean openWebpage(URL url) {
+	    try {
+	        return openWebpage(url.toURI());
+	    } catch (URISyntaxException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
 	}
 	
 	private Font setFontSherif(float fontSize) {
