@@ -15,10 +15,9 @@ public class MongoDB {
     String uri = "mongodb+srv://kurtquejada:mLSQY9y1Zl1CmtLj@cluster0.nzqbdss.mongodb.net/";
 
 
-    public  MongoDB(){ MongoController();}
+    public  MongoDB(boolean haveDelay){ MongoController(haveDelay);}
 
-    public void MongoController() {
-
+    public void MongoController(boolean wantDelay) {
         // Replace the placeholder with your Atlas connection string
         // Construct a ServerApi instance using the ServerApi.builder() method
         ServerApi serverApi = ServerApi.builder()
@@ -32,32 +31,10 @@ public class MongoDB {
 
         Threading myThread = new Threading(settings, accounts);
         myThread.start();
-        accounts = myThread.getAccounts();
-        /*
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
-            MongoDatabase database = mongoClient.getDatabase("Account");
-            MongoCollection<Document> collection = database.getCollection("account");
 
-            FindIterable<Document> JSON_STRING = collection.find();
-            ObjectMapper mapper = new ObjectMapper();
-
-            MongoCursor<Document> cursor = collection.find().iterator();
-            while (cursor.hasNext()) {
-                JsonNode node = mapper.readTree(cursor.next().toJson());
-                String username = node.get("username").asText();
-                String name = node.get("name").asText();
-                String email = node.get("email").asText();
-                String password = node.get("password").asText();
-                accounts.add(new Account(username, name, email, password));
-            }
-
-            //JsonNode node = mapper.readTree(JSON_STRING[0]);
-
-
-        }catch(Exception e){
-            System.err.println(e);
-        }
-        */
+        if(wantDelay)
+            while(myThread.isAlive())
+                accounts = myThread.getAccounts();
     }
 
     public List<Account> getAccounts() {

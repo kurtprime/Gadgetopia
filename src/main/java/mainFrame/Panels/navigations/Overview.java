@@ -188,13 +188,13 @@ public class Overview extends JLayeredPane{
 		top.setBounds(590,20,600,31);
 		top.setForeground(new Color(0xE8EAEE));
 		
-		JLabel mid = new JLabel("<html><p style=\"line-height: 1.8;\" >Our team’s mission is to provide a dynamic platform that fosters collaboration, and technological advancement. We connect tech enthusiasts, startups, and industry leaders, enabling them to C in an ever-evolving digital landscape.</p> </html>");
+		JLabel mid = new JLabel("<html><p style=\"line-height: 1.8;\" >Our team's mission is to provide a dynamic platform that fosters collaboration, and technological advancement. We connect tech enthusiasts, startups, and industry leaders, enabling them to C in an ever-evolving digital landscape.</p> </html>");
 		mid.setBounds(590,50,450,190);
 		mid.setFont(setFontSGlacial(23));
 		mid.setForeground(new Color(0xE8EAEE));
 		mid.setOpaque(false);
 		
-		JLabel bot = new JLabel("<html><p style=\"line-height: 1.8;\" >Our team’s vision is to be the go-to hub for all things tech. We aspire to inspire creativity, drive innovation, and shape the future by curating cutting-edge content, hosting events, and building a vibrant community passionate about technology.</p> </html>");
+		JLabel bot = new JLabel("<html><p style=\"line-height: 1.8;\" >Our team's vision is to be the go-to hub for all things tech. We aspire to inspire creativity, drive innovation, and shape the future by curating cutting-edge content, hosting events, and building a vibrant community passionate about technology.</p> </html>");
 		bot.setBounds(700,250,450,190);
 		bot.setFont(setFontSGlacial(23));
 		bot.setForeground(new Color(0xE8EAEE));
@@ -309,19 +309,29 @@ public class Overview extends JLayeredPane{
 	}
 	
 	private JLabel paragraph() {
-		String text = "<html>"
-				+ "<p align=\"justify\">"
-				+ "A leading technology company dedicated"
-				+ "<br/>to developing and delivering"
-				+ "<br/>groundbreaking technological innovations."
-				+ "<br/>Our focus is on creating advanced,"
-				+ "<br/>user-friendly solutions that transform"
-				+ "<br/>industries and improve everyday life."
-				+ "<br/>From cutting-edge gadgets to sophisticated"
-				+ "<br/>software and AI-driven solutions,"
-				+ "<br/>GADGETOPIA stands at the forefront of"
-				+ "<br/>technological advancement."
+		String text = "<html>" +"<center><b>A leading technology company dedicated"+
+				"to developing and delivering" +
+				"groundbreaking technological innovations" +
+				"Our focus is on creating advanced,"+
+				"user-friendly solutions that transform" +
+				"industries and improve everyday life." +
+				"From cutting-edge gadgets to sophisticated" +
+				"software and AI-driven solutions," +
+				"GADGETOPIA stands at the forefront of" +
+				"technological advancement.</b></center>"
 				+ "</html>";
+//				+ "<p align=\"justify\">"
+//				+ "A leading technology company dedicated"
+//				+ "<br/>to developing and delivering"
+//				+ "<br/>groundbreaking technological innovations."
+//				+ "<br/>Our focus is on creating advanced,"
+//				+ "<br/>user-friendly solutions that transform"
+//				+ "<br/>industries and improve everyday life."
+//				+ "<br/>From cutting-edge gadgets to sophisticated"
+//				+ "<br/>software and AI-driven solutions,"
+//				+ "<br/>GADGETOPIA stands at the forefront of"
+//				+ "<br/>technological advancement."
+
 		
 		JLabel label = new JLabel(text, SwingConstants.CENTER);
 		label.setFont(setFontSGlacial(24));

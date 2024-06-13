@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class Login extends JPanel {
-    MongoDB acc = new MongoDB();
-    List<Account> accounts = acc.getAccounts();
+    MongoDB accts = new MongoDB(false);
+    List<Account> accounts = accts.getAccounts();
     private Account account;
     public JTextField nameField = null;
     private boolean found = false;
@@ -27,6 +27,7 @@ public class Login extends JPanel {
     public Login(){
         login();
     }
+
     private JPanel pane(){
         return this;
     }
@@ -114,8 +115,8 @@ public class Login extends JPanel {
         forgetPass.setOpaque(false);
 
         JLabel invalidInput = new JLabel("<html><p style=\"color: #E80816\">*INVALID INPUT</p></html>", SwingConstants.CENTER);
-        invalidInput.setBounds(90, 209, 128, 22);
-        invalidInput.setFont(setFontSherif(8));
+        invalidInput.setBounds(95, 209, 128, 22);
+        invalidInput.setFont(setFontSherif(10));
         invalidInput.setOpaque(false);
         invalidInput.setVisible(false);
 
@@ -128,15 +129,20 @@ public class Login extends JPanel {
         loginbtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                MongoDB acc = new MongoDB(true);
+                accounts = acc.getAccounts();
                 int accountLength = accounts.toArray().length;
                 int i = 0;
                 for (i = 0; i < accountLength; i++) {
                     String p = String.valueOf(passwordField.getPassword());
-                    boolean available = nameField.getText().equals(accounts.get(i).getUsername()) && p.equals(accounts.get(i).getPassword());
+                    boolean correctUsername = nameField.getText().equalsIgnoreCase(accounts.get(i).getUsername());
+                    boolean available = correctUsername && p.equals(accounts.get(i).getPassword());
                     if(available){
-                        JOptionPane.showMessageDialog(pane(), "ON PROGRESS pa wait po ma'am",
+                        /*
+                        JOptionPane.showMessageDialog(null, "Successfully login",
                                 "On progress",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        */
                         account = accounts.get(i);
                         break;
                     }

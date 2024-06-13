@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import mainFrame.Controller.MongoDB;
 import mainFrame.Controller.Objects.Account;
 import mainFrame.Panels.Methdos.*;
 import mainFrame.Panels.SubPanels.Login;
@@ -34,7 +35,6 @@ import static java.lang.System.err;
 public class SecondPanel extends JLayeredPane {
 
 	private static final long serialVersionUID = 1L;
-
 	final int WIDTH = 1215;
 	final int HEIGHT = 714;
 	
@@ -151,7 +151,7 @@ public class SecondPanel extends JLayeredPane {
 		LogIn.setPreferredSize(new Dimension(80,30));
 		
 		SignIn.addActionListener(e->{
-			
+			SignUp signup = SignUpPane();
 			ImageIcon icon = new ImageIcon(new ImageIcon("Images/bglogin&signup.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
     		backgroundImage.setIcon(icon);
     		backgroundImage.setBounds(0,-21,1215,734);
@@ -169,61 +169,23 @@ public class SecondPanel extends JLayeredPane {
     		backBtn.setBounds(50,530,180,40);
     		body.add(backBtn);
     		body.add(url());
-    		body.add(SignUpPane(), Integer.valueOf(1));
+    		body.add(signup, Integer.valueOf(1));
     		backBtn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 					backHome();
                 }});
+			JLabel signupBtn = signup.signUpBtn();
+			signupBtn.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(signup.validSignup())
+						LoginPanel(LoginPane);
+				}});
 		});
 
 		LogIn.addActionListener(e->{
-			ImageIcon icon = new ImageIcon(new ImageIcon("Images/bglogin&signup.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
-    		backgroundImage.setIcon(icon);
-    		backgroundImage.setBounds(0,-21,1215,734);
-    		backgroundImage.revalidate();
-
-    		SignIn.setOpaque(false);
-    		SignIn.repaint();
-
-    		LogIn.setOpaque(true);
-    		LogIn.repaint();
-
-    		body.removeAll();
-			JLabel backBtn = btn("BACK",50,25, setFontSGlacial(20));
-			backBtn.setBounds(50,530,180,40);
-			body.add(backBtn);
-			body.add(url());
-
-			if(!LoginPane.isFound()){
-				System.out.println(LoginPane.isFound());
-			}
-
-			body.add(LoginPane, Integer.valueOf(1));
-			backBtn.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					backHome();
-				}});
-			JLabel loginBtn = LoginPane.getLoginbtn();
-			loginBtn.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					try{
-						account = LoginPane.getData();
-						PANE().remove(username);
-						System.out.println(account.getUsername());
-						username = userName(account.getUsername());
-						PANE().add(username, Integer.valueOf(2));
-						backHome();
-						PANE().revalidate();
-						PANE().repaint();
-
-					}catch (NullPointerException ex){
-						System.out.println("edi wew");
-					}
-				}});
-
+			LoginPanel(LoginPane);
 		});
 		
 		label.setOpaque(false);
@@ -251,6 +213,49 @@ public class SecondPanel extends JLayeredPane {
 		btn.setLayout(new FlowLayout(FlowLayout.CENTER,0,8));
 
 		return btn;
+	}
+
+	private void LoginPanel(Login LoginPane){
+		ImageIcon icon = new ImageIcon(new ImageIcon("Images/bglogin&signup.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
+		backgroundImage.setIcon(icon);
+		backgroundImage.setBounds(0,-21,1215,734);
+		backgroundImage.revalidate();
+
+		SignIn.setOpaque(false);
+		SignIn.repaint();
+		LogIn.setOpaque(true);
+		LogIn.repaint();
+
+		body.removeAll();
+		JLabel backBtn = btn("BACK",50,25, setFontSGlacial(20));
+		backBtn.setBounds(50,530,180,40);
+		body.add(backBtn);
+		body.add(url());
+
+		body.add(LoginPane, Integer.valueOf(1));
+		backBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				backHome();
+			}});
+		JLabel loginBtn = LoginPane.getLoginbtn();
+		loginBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try{
+					account = LoginPane.getData();
+					System.out.println(account.getUsername());
+					PANE().remove(username);
+					username = userName(account.getUsername());
+					PANE().add(username, Integer.valueOf(2));
+					backHome();
+					PANE().revalidate();
+					PANE().repaint();
+
+				}catch (NullPointerException ex){
+					System.out.println("edi wew");
+				}
+			}});
 	}
 
 	private SignUp SignUpPane() {

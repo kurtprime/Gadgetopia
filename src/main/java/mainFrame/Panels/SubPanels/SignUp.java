@@ -1,6 +1,8 @@
 package mainFrame.Panels.SubPanels;
 
 import mainFrame.Controller.MongoAdd;
+import mainFrame.Controller.MongoDB;
+import mainFrame.Controller.Objects.Account;
 import mainFrame.Panels.Methdos.CheckBox;
 import mainFrame.Panels.Methdos.RoundedLabel;
 import mainFrame.Panels.Methdos.RoundedLines;
@@ -11,9 +13,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUp extends JPanel {
+    MongoDB acc = new MongoDB(false);
+    List<Account> accounts = acc.getAccounts();  //= acc.getAccounts();
+    private Account account;
+    private JLabel signUpBtn;
+    private boolean isAllCorrect = true;
+
     public SignUp() {
+
         signUpPane();
     }
 
@@ -141,7 +153,7 @@ public class SignUp extends JPanel {
         });
 
         JLabel Agreement = new JLabel("<html><p>I agree with <span style=\"color: #E80816\">privacy</span> and <span style=\"color: #E80816\">policy</span> </p> </html>", SwingConstants.RIGHT);
-        Agreement.setBounds(90, 460, 220, 22);
+        Agreement.setBounds(90, 470, 220, 22);
         Agreement.setFont(setFontSherif(13));
         Agreement.setOpaque(false);
         CheckBox check = new CheckBox();
@@ -150,23 +162,90 @@ public class SignUp extends JPanel {
         check.setLayout(null);
         Agreement.add(check);
 
-        JLabel signUpBtn = btn("SIGN UP", 110, 29, setFontSGlacial_BOLD(27));
-        signUpBtn.setBounds(90, 500, 240, 40);
+        signUpBtn = btn("SIGN UP", 110, 29, setFontSGlacial_BOLD(27));
+        signUpBtn.setBounds(90, 510, 240, 40);
         signUpBtn.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 6));
         signUpBtn.setBackground(new Color(0x61627B));
         signUpBtn.setForeground(new Color(0x61627B));
 
+        JLabel notValidName = redFlag("Invalid Name");
+        notValidName.setBounds(88, 209, 128, 22);
+        JLabel notValidUsername = redFlag("Invalid UserName");
+        notValidUsername.setBounds(88, 269, 128, 22);
+        JLabel notValidEmail = redFlag("Invalid Email");
+        notValidEmail.setBounds(88, 329, 128, 22);
+        JLabel notValidPassword = redFlag("Password must have a letter, a number");
+        notValidPassword.setBounds(88, 389, 328, 22);
+        JLabel notTheSamePassword = redFlag("Password does not match");
+        notTheSamePassword.setBounds(88, 449, 128, 22);
+        JLabel whyNot = redFlag("Payag kana please");
+        whyNot.setBounds(95, 485, 128, 22);
+
         signUpBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                isAllCorrect=true;
+                String name = nameField.getText();
+                String username = usernameField.getText();
+                String email = emailField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+                String confirmPass = String.valueOf(rePassField.getPassword());
 
+                notValidName.setVisible(false);
+                notValidUsername.setVisible(false);
+                notValidEmail.setVisible(false);
+                notValidPassword.setVisible(false);
+                notTheSamePassword.setVisible(false);
+                whyNot.setVisible(false);
+                if(!validateName(name) || name.equals("NAME")){
+                    isAllCorrect=false;
+                    notValidName.setVisible(true);
+                }
+                if(!validateUsername(username) || username.equals("USERNAME")){
+                    isAllCorrect=false;
+                    notValidUsername.setVisible(true);
+                }else {
+                    for (int i = 0; i < accounts.toArray().length ; i++) {
+                        String userName = accounts.get(i).getUsername().toLowerCase();
+                        if(username.toLowerCase().equals(userName)){
+                            System.out.println("username already exist");
+                            isAllCorrect=false;
+                            notValidUsername.setText("<html><p style=\"color: #E80816\">*Username Already Exist</p></html>");
+                            notValidUsername.setVisible(true);
+                        }
+                    }
+                }
+                if(!validateEmail(email)){
+                    isAllCorrect=false;
+                    notValidEmail.setVisible(true);
 
-                //new MongoAdd();
-                System.out.println("ADD");
+                }
+                if(!validatePassword(password)){
+                    isAllCorrect=false;
+                    notValidPassword.setVisible(true);
+                }
+                if(!validateConfirm(password, confirmPass)){
+                    isAllCorrect=false;
+                    notTheSamePassword.setVisible(true);
+                }
+                if(!check.isSelected()){
+                    isAllCorrect=false;
+                    whyNot.setVisible(true);
+                }
+                if(isAllCorrect){
+                    new MongoAdd(username, name, email, password);
+                    accounts = new MongoDB(true).getAccounts();
+                }
             }
 
         });
 
+        this.add(whyNot);
+        this.add(notValidName);
+        this.add(notValidUsername);
+        this.add(notValidEmail);
+        this.add(notValidPassword);
+        this.add(notTheSamePassword);
         this.add(signUpBtn);
         this.add(Agreement);
         this.add(rePass);
@@ -177,6 +256,48 @@ public class SignUp extends JPanel {
         this.add(signUpLabel);
         this.add(createTitle);
     }
+
+    private JLabel redFlag(String input){
+        JLabel invalidInput = new JLabel("<html><p style=\"color: #E80816\">*"+input+"</p></html>", SwingConstants.CENTER);
+        invalidInput.setFont(setFontSherif(10));
+        invalidInput.setOpaque(false);
+        invalidInput.setBackground(Color.GRAY);
+        invalidInput.setHorizontalAlignment(SwingConstants.LEFT);
+        invalidInput.setVisible(false);
+
+        return invalidInput;
+    }
+
+    private boolean validateName(String name){
+        Pattern pattern = Pattern.compile("^((?=.{1,29}$)[A-Z]\\w*(\\s[A-Z]\\w*)*)$");
+        Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
+    }
+    private boolean validateUsername(String username){
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9_.-]{3,}");
+        Matcher matcher = pattern.matcher(username);
+        return matcher.matches();
+    }
+    private boolean validateEmail(String emailStr) {
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+
+        return matcher.matches();
+    }
+
+    private boolean validatePassword(String password) {
+        String regEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{5,20}$";
+
+        Pattern pattern = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(password);
+
+        return matcher.matches();
+    }
+    private boolean validateConfirm(String password, String confirmPassword){
+        return password.equals(confirmPassword);
+    }
+
     private JLabel btn(String t, int x, int y, Font fnt) {
         RoundedLabel btn = new RoundedLabel("",40);
         JLabel text = new JLabel(t);
@@ -193,6 +314,12 @@ public class SignUp extends JPanel {
         return btn;
     }
 
+    public JLabel signUpBtn(){
+        return signUpBtn;
+    }
+    public boolean validSignup(){
+        return isAllCorrect;
+    }
 
     private Font setFontSherif(float fontSize) {
         Font FontSherif;

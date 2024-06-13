@@ -20,6 +20,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import mainFrame.Controller.MongoDB;
 import mainFrame.Panels.Methdos.DrawLine;
 import mainFrame.Panels.Methdos.RoundedLabel;
 
@@ -31,10 +32,10 @@ public class FirstPanel extends JPanel {
 	Font FontSherif;
 	Font FontGlacial;
 	int FontColor = 0xE8EAEE;
-	
 	int width = 1215;
 	int height = 714;
 	JLayeredPane layer = new JLayeredPane();
+
 	public FirstPanel() {
 		MainPanel();
 	}
