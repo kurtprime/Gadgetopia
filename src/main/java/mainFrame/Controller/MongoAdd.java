@@ -20,12 +20,16 @@ public class MongoAdd {
 
     List<Account> accounts = new ArrayList<>();
     String uri = "mongodb+srv://kurtquejada:mLSQY9y1Zl1CmtLj@cluster0.nzqbdss.mongodb.net/";
-    private String username;
-    private String name;
-    private String email;
-    private String password;
+    private final String username;
+    private final String name;
+    private final String email;
+    private final String password;
 
-    public MongoAdd(){
+    public MongoAdd(String username, String name, String email, String password){
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.password = password;
         MongoController();
     }
 

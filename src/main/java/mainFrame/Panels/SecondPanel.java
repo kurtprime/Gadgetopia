@@ -252,10 +252,8 @@ public class SecondPanel extends JLayeredPane {
 
 		return btn;
 	}
-	private JPanel LoginPane(){
-		return new Login();
-	}
-	private JPanel SignUpPane() {
+
+	private SignUp SignUpPane() {
         return new SignUp();
 	}
 	

@@ -121,12 +121,12 @@ private void MainPanel() {
     	
 		this.add(layer);
 		// Remove after done editing in second panel	
-		/*
+
 		PANEL().removeAll();
     	PANEL().add(new SecondPanel());
     	PANEL().revalidate();
     	PANEL().repaint();
-    	*/
+
     	// 
     	
 	}

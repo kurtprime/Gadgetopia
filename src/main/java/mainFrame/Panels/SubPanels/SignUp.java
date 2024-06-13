@@ -159,7 +159,9 @@ public class SignUp extends JPanel {
         signUpBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new MongoAdd();
+
+
+                //new MongoAdd();
                 System.out.println("ADD");
             }
 

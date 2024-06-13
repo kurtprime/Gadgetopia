@@ -22,7 +22,6 @@ public class Login extends JPanel {
     private Account account;
     public JTextField nameField = null;
     private boolean found = false;
-    private String userName = null;
     JLabel loginbtn;
 
     public Login(){
