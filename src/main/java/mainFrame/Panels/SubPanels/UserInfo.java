@@ -45,8 +45,37 @@ public class UserInfo extends JPanel {
         myAccount.setBackground(Color.gray);
 
         JLabel titleAccount = new JLabel("MY ACCOUNT");
-        titleAccount.setFont(setFontSGlacial(35));
+        titleAccount.setFont(setFontSGlacial_BOLD(37));
+        titleAccount.setBounds(20,15,300,37);
+        titleAccount.setForeground(new Color(0xE8EAEE));
 
+        //JLabel userIcon = new JLabel();
+        JLabel userIcon = new JLabel("@"+ "BASTA" /* account.getUsername() */);
+        ImageIcon icon = new ImageIcon(new ImageIcon("Images/hehe.png").getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
+        userIcon.setIcon(icon);
+        userIcon.setOpaque(true);
+        userIcon.setFont(new Font("sans",Font.BOLD,21));
+        userIcon.setBackground(Color.red);
+        userIcon.setForeground(new Color(0xE8EAEE));
+        userIcon.setHorizontalAlignment(SwingConstants.LEFT);
+        userIcon.setBounds(20,130,300,50);
+
+        JPanel userDetails = new JPanel();
+        userDetails.setOpaque(false);
+        userDetails.setBounds(20,180,400,420);
+        userDetails.setVisible(true);
+        userDetails.setLayout(new FlowLayout(FlowLayout.LEFT,5,23));
+        userDetails.add(personalInfo("NAME","Kurt"));
+        userDetails.add(personalInfo("AGE","18"));
+        userDetails.add(personalInfo("GENDER","ATTACK HELICOPTER"));
+        userDetails.add(personalInfo("BIRTHDAY","NOVEMBER 8, 2019"));
+        userDetails.add(personalInfo("ADDRESS","SA EARTH"));
+        userDetails.add(personalInfo("EMAIL","Kurt@gmail.com"));
+        userDetails.add(personalInfo("PHONE NUMBER","328959009"));
+
+        myAccount.add(userDetails);
+        myAccount.add(userIcon);
+        myAccount.add(titleAccount);
         myAccount.add(url());
         return myAccount;
     }
@@ -71,6 +100,14 @@ public class UserInfo extends JPanel {
             }});
 
         return btn;
+    }
+    private JLabel personalInfo(String title, String ans){
+        JLabel label = new JLabel(title+": "+ans);
+        label.setFont(setFontSherif(24));
+        label.setForeground(new Color(0xE8EAEE));
+        label.setPreferredSize(new Dimension(400,25));
+
+        return label;
     }
     private JLabel url() {
         JLabel url = new JLabel("www.gadgetopia.com");

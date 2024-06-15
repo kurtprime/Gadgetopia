@@ -373,7 +373,6 @@ public class SecondPanel extends JLayeredPane {
 				body.setLayout(new BorderLayout());
 				body.add(userInfo, BorderLayout.CENTER);
 				body.revalidate();
-
 				System.out.println( !(null == account) );
 			}
 		});
