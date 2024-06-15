@@ -151,8 +151,10 @@ public class SecondPanel extends JLayeredPane {
     		backgroundImage.revalidate();
     		SignIn.setOpaque(true);
     		SignIn.repaint();
+    		
     		LogIn.setOpaque(false);
     		LogIn.repaint();
+    		
     		body.removeAll(); 		
     		body.revalidate();
     		
@@ -613,7 +615,7 @@ public class SecondPanel extends JLayeredPane {
 			System.out.println(e);
 			return new Font("Arial", Font.PLAIN,(int) fontSize);
 		}
-		
+
 	}
 	
 	private Font setFontFoldit(float fontSize) {
