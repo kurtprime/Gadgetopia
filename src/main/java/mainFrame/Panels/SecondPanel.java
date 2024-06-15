@@ -1,14 +1,6 @@
 package mainFrame.Panels;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -23,6 +15,7 @@ import mainFrame.Controller.Objects.Account;
 import mainFrame.Panels.Methdos.*;
 import mainFrame.Panels.SubPanels.Login;
 import mainFrame.Panels.SubPanels.SignUp;
+import mainFrame.Panels.SubPanels.UserInfo;
 import mainFrame.Panels.navigations.Categories;
 import mainFrame.Panels.navigations.Contacts;
 import mainFrame.Panels.navigations.Homes;
@@ -158,10 +151,8 @@ public class SecondPanel extends JLayeredPane {
     		backgroundImage.revalidate();
     		SignIn.setOpaque(true);
     		SignIn.repaint();
-    		
     		LogIn.setOpaque(false);
     		LogIn.repaint();
-    		
     		body.removeAll(); 		
     		body.revalidate();
     		
@@ -368,7 +359,22 @@ public class SecondPanel extends JLayeredPane {
 		profile.setForeground(new Color(0xFFFFFF));
 		profile.setFont(setFontSGlacial(20));
 		profile.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		
+
+		profile.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				UserInfo userInfo = new UserInfo(account);
+				ImageIcon icon = new ImageIcon(new ImageIcon("Images/user_profile.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
+				backgroundImage.setIcon(icon);
+				backgroundImage.setBounds(0,-21,1215,734);
+				backgroundImage.revalidate();
+				body.removeAll();
+				body.setLayout(new BorderLayout());
+				body.add(userInfo, BorderLayout.CENTER);
+				body.revalidate();
+
+				System.out.println( !(null == account) );
+			}
+		});
 		
 		panel.add(cart);
 		panel.add(profile);
@@ -608,22 +614,6 @@ public class SecondPanel extends JLayeredPane {
 			return new Font("Arial", Font.PLAIN,(int) fontSize);
 		}
 		
-	}
-	
-	@SuppressWarnings("unused")
-	private Font setFontSherif(float fontSize) {
-		Font FontSherif;
-		try {
-			FontSherif = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/DMSerifDisplay-Regular.ttf")).deriveFont(fontSize);
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		    //register the font
-		    ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/DMSerifDisplay-Regular.ttf")) );
-		    
-		    return FontSherif;
-		} catch (FontFormatException | IOException e) {
-            // TODO Auto-generated catch block
-			return new Font("Arial", Font.PLAIN,(int) fontSize);
-		}
 	}
 	
 	private Font setFontFoldit(float fontSize) {

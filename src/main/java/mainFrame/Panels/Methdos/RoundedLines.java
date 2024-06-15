@@ -16,6 +16,7 @@ public class RoundedLines extends JLabel {
         super(text);
         this.radius = radius;
         setOpaque(false); // Ensure the label doesn't paint its background
+        setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     @Override
