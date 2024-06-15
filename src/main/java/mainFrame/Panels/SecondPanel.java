@@ -158,10 +158,8 @@ public class SecondPanel extends JLayeredPane {
     		backgroundImage.revalidate();
     		SignIn.setOpaque(true);
     		SignIn.repaint();
-    		
     		LogIn.setOpaque(false);
     		LogIn.repaint();
-    		
     		body.removeAll(); 		
     		body.revalidate();
     		
@@ -368,7 +366,19 @@ public class SecondPanel extends JLayeredPane {
 		profile.setForeground(new Color(0xFFFFFF));
 		profile.setFont(setFontSGlacial(20));
 		profile.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		
+
+		profile.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				ImageIcon icon = new ImageIcon(new ImageIcon("Images/user_profile.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
+				backgroundImage.setIcon(icon);
+				backgroundImage.setBounds(0,-21,1215,734);
+				backgroundImage.revalidate();
+				body.removeAll();
+
+
+				System.out.println( !(null == account) );
+			}
+		});
 		
 		panel.add(cart);
 		panel.add(profile);
