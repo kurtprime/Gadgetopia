@@ -33,6 +33,7 @@ public class UserInfo extends JPanel {
         ImageIcon setting = new ImageIcon(new ImageIcon("Images/setting.png").getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
         settingLabel.setIcon(setting);
         settingLabel. setBounds(700,30,40,40);
+        settingLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         settingLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -63,10 +64,42 @@ public class UserInfo extends JPanel {
         titleSetting.setBounds(20,15,300,37);
         titleSetting.setForeground(new Color(0xE8EAEE));
 
+        JPanel account = accountSettings();
+        account.setBounds(0,60,400,250);
+
+        settingPane.add(account);
         settingPane.add(titleSetting);
         return settingPane;
     }
 
+    private JPanel accountSettings(){
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(400,300));
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel titleName = new JLabel("Account");
+        titleName.setFont(setFontSGlacial(18));
+        titleName.setForeground(Color.WHITE);
+        titleName.setPreferredSize(new Dimension(200,20));
+
+
+        panel.add(titleName);
+        return panel;
+    }
+
+    private JPanel option(String pathFile, String name, int x, int y){
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(400,100));
+
+        JLabel label = new JLabel(name);
+        ImageIcon icon = new ImageIcon(new ImageIcon(pathFile).getImage().getScaledInstance(x,y, Image.SCALE_SMOOTH));
+        label.setIcon(icon);
+        label.setFont(setFontSherif(24));
+        label.setForeground(new Color(0xE8EAEE));
+
+
+        return panel;
+    }
 
     private JPanel rightSideSetting(){
         JPanel rightSide = new JPanel();
@@ -180,6 +213,7 @@ public class UserInfo extends JPanel {
         label.setPreferredSize(new Dimension(140,90));
         ImageIcon icon = new ImageIcon(new ImageIcon(pathFile).getImage().getScaledInstance(x,y, Image.SCALE_SMOOTH));
         label.setIcon(icon);
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         return label;
     }
