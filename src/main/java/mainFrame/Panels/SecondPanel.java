@@ -156,13 +156,14 @@ public class SecondPanel extends JLayeredPane {
     		LogIn.repaint();
     		
     		body.removeAll(); 		
-    		body.revalidate();
+    		body.setLayout(null);
     		
     		JLabel backBtn = btn("BACK",50,25, setFontSGlacial(20));
     		backBtn.setBounds(50,530,180,40);
     		body.add(backBtn);
     		body.add(url());
     		body.add(signup, Integer.valueOf(1));
+			body.revalidate();
     		backBtn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -220,6 +221,7 @@ public class SecondPanel extends JLayeredPane {
 		LogIn.repaint();
 
 		body.removeAll();
+		body.setLayout(null);
 		JLabel backBtn = btn("BACK",50,25, setFontSGlacial(20));
 		backBtn.setBounds(50,530,180,40);
 		body.add(backBtn);
@@ -246,7 +248,7 @@ public class SecondPanel extends JLayeredPane {
 					PANE().repaint();
 
 				}catch (NullPointerException ex){
-					System.out.println("edi wew");
+					System.err.println("edi wew");
 				}
 			}});
 	}
@@ -373,7 +375,17 @@ public class SecondPanel extends JLayeredPane {
 				body.setLayout(new BorderLayout());
 				body.add(userInfo, BorderLayout.CENTER);
 				body.revalidate();
-				System.out.println( !(null == account) );
+				userInfo.getSettingIcon().addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						ImageIcon icon = new ImageIcon(new ImageIcon("Images/settings.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
+						backgroundImage.setIcon(icon);
+						backgroundImage.revalidate();
+					}});
+				userInfo.getBackHome().addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						backHome();
+						System.out.println("WHY YOU NOT WORKING?");
+					}});
 			}
 		});
 		
@@ -644,7 +656,6 @@ public class SecondPanel extends JLayeredPane {
 		    return FontGlacial;
 		} catch (FontFormatException | IOException e) {
 			// TODO Auto-generated catch block
-			//System.out.println(e);
 			return new Font("Arial", Font.PLAIN,(int) fontSize);
 		}
 		
