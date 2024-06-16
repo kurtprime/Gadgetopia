@@ -1,6 +1,7 @@
 package mainFrame.Controller.Objects;
 
-import org.bson.types.ObjectId;
+import java.awt.*;
+import java.util.Arrays;
 
 public class Account {
 
@@ -9,14 +10,15 @@ public class Account {
     private String name;
     private String email;
     private String password;
-
+    private Cart[] cart;
     public Account(){}
 
-    public Account(String username, String name, String email, String password){
+    public Account(String username, String name, String email, String password, Cart[] cart){
         this.username = username;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.cart = cart;
     }
 
     public String getPassword() {
@@ -51,14 +53,22 @@ public class Account {
         this.username = username;
     }
 
+    public Cart[] getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart[] cart) {
+        this.cart = cart;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
-                "username='" + username + '\'' +
+                "cart=" + Arrays.toString(cart) +
+                ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
-
 }

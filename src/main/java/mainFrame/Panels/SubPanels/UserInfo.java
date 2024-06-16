@@ -11,15 +11,20 @@ import java.io.File;
 import java.io.IOException;
 
 public class UserInfo extends JPanel {
-    Account account;
-    JLabel settingLabel;
-    RoundedLabel btn = backHome();
-    private final JPanel rightSide = rightSide();
-    private final JPanel leftSideAccount = leftSideAccount();
+    private final Account account;
+    private final JPanel leftSideAccount;
     public  UserInfo(Account account){
         this.account = account;
+        leftSideAccount= leftSideAccount(account);
         info();
     }
+    JLabel settingLabel;
+    RoundedLabel btn = backHome();
+
+    JButton logOutBtn;
+
+    private final JPanel rightSide = rightSide();
+
     private void info(){
         this.setOpaque(false);
         this.setBackground(Color.RED);
@@ -33,6 +38,7 @@ public class UserInfo extends JPanel {
         ImageIcon setting = new ImageIcon(new ImageIcon("Images/setting.png").getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
         settingLabel.setIcon(setting);
         settingLabel. setBounds(700,30,40,40);
+        settingLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         settingLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -63,10 +69,95 @@ public class UserInfo extends JPanel {
         titleSetting.setBounds(20,15,300,37);
         titleSetting.setForeground(new Color(0xE8EAEE));
 
+        JPanel accountsSetting = accountSettings();
+        accountsSetting.setBounds(0,60,400,250);
+
+        JPanel other = otherSettings();
+        other.setBounds(0,280,400,250);
+
+        settingPane.add(accountsSetting);
         settingPane.add(titleSetting);
+        settingPane.add(other);
+        settingPane.add(url());
         return settingPane;
     }
 
+    private JPanel accountSettings(){
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(400,250));
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT,0,10));
+        panel.setOpaque(false);
+
+        JLabel titleName = new JLabel("     ACCOUNT");
+        titleName.setFont(setFontSGlacial(20));
+        titleName.setForeground(Color.WHITE);
+        titleName.setPreferredSize(new Dimension(400,20));
+
+
+        panel.add(titleName);
+        panel.add(option("Images/hehe.png", account.getName(), 50,50));
+        panel.add(option("Images/LockSetting.png", "PRIVACY", 40,50));
+        return panel;
+    }
+
+    private JPanel otherSettings(){
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(400,350));
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER,0,10));
+        panel.setOpaque(false);
+
+        JLabel titleName = new JLabel("     OTHERS");
+        titleName.setFont(setFontSGlacial(20));
+        titleName.setForeground(Color.WHITE);
+        titleName.setPreferredSize(new Dimension(400,20));
+
+
+        panel.add(titleName);
+        panel.add(option("Images/notifBell.png", "NOTIFICATION", 50,50));
+        panel.add(option("Images/languageIcon.png", "LANGUAGE", 50,50));
+        panel.add(Logout());
+
+        return panel;
+    }
+    private JButton Logout(){
+        logOutBtn = new JButton("LOG OUT");
+        logOutBtn.setForeground(Color.white);
+        logOutBtn.setFont(setFontSherif(28));
+        logOutBtn.setBackground(new Color(0x292A2E));
+        logOutBtn.setPreferredSize(new Dimension(300,40));
+        logOutBtn.setBorderPainted(false);
+        logOutBtn.setFocusPainted(false);
+        logOutBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        return logOutBtn;
+    }
+
+    public JButton getLogOutBtn(){
+        return logOutBtn;
+    }
+
+    private JPanel option(String pathFile, String name, int x, int y){
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(400,70));
+        panel.setLayout(new FlowLayout());
+        panel.setOpaque(false);
+
+        JLabel label = new JLabel(name);
+        ImageIcon icon = new ImageIcon(new ImageIcon(pathFile).getImage().getScaledInstance(x,y, Image.SCALE_SMOOTH));
+        label.setIcon(icon);
+        label.setFont(setFontSherif(24));
+        label.setForeground(new Color(0xE8EAEE));
+        label.setPreferredSize(new Dimension(300,50));
+
+        JLabel arrow = new JLabel();
+        ImageIcon arrowIcon = new ImageIcon(new ImageIcon("Images/yeah.png").getImage().getScaledInstance(24,30, Image.SCALE_SMOOTH));
+        arrow.setIcon(arrowIcon);
+        arrow.setPreferredSize(new Dimension(24,30));
+
+        panel.add(label);
+        panel.add(arrow);
+        return panel;
+    }
 
     private JPanel rightSideSetting(){
         JPanel rightSide = new JPanel();
@@ -180,11 +271,12 @@ public class UserInfo extends JPanel {
         label.setPreferredSize(new Dimension(140,90));
         ImageIcon icon = new ImageIcon(new ImageIcon(pathFile).getImage().getScaledInstance(x,y, Image.SCALE_SMOOTH));
         label.setIcon(icon);
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         return label;
     }
 
-    private JPanel leftSideAccount(){
+    private JPanel leftSideAccount(Account acc){
         JPanel myAccount = new JPanel();
         myAccount.setLayout(null);
         myAccount.setOpaque(false);
@@ -204,7 +296,7 @@ public class UserInfo extends JPanel {
         edit.setForeground(Color.white);
         edit.setBounds(20,55, 150,50);
 
-        JLabel userIcon = new JLabel("@"+ "BASTA" /* account.getUsername() */);
+        JLabel userIcon = new JLabel("@" + acc.getUsername());
         ImageIcon icon = new ImageIcon(new ImageIcon("Images/hehe.png").getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH));
         userIcon.setIcon(icon);
         userIcon.setOpaque(false);
@@ -219,12 +311,12 @@ public class UserInfo extends JPanel {
         userDetails.setBounds(20,180,400,420);
         userDetails.setVisible(true);
         userDetails.setLayout(new FlowLayout(FlowLayout.LEFT,5,23));
-        userDetails.add(personalInfo("NAME","Kurt"));
+        userDetails.add(personalInfo("NAME",acc.getName()) );
         userDetails.add(personalInfo("AGE","18"));
         userDetails.add(personalInfo("GENDER","ATTACK HELICOPTER"));
         userDetails.add(personalInfo("BIRTHDAY","NOVEMBER 8, 2019"));
         userDetails.add(personalInfo("ADDRESS","SA EARTH"));
-        userDetails.add(personalInfo("EMAIL","Kurt@gmail.com"));
+        userDetails.add(personalInfo("EMAIL", acc.getEmail()));
         userDetails.add(personalInfo("PHONE NUMBER","328959009"));
 
         myAccount.add(edit);
@@ -254,7 +346,7 @@ public class UserInfo extends JPanel {
         btn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //System.out.println(account);
+                System.out.println(account);
             }});
 
         return btn;
@@ -292,7 +384,6 @@ public class UserInfo extends JPanel {
             System.out.println(e);
             return new Font("Arial", Font.PLAIN,(int) fontSize);
         }
-
     }
     private Font setFontSherif(float fontSize) {
         Font FontSherif;

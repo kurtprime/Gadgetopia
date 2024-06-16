@@ -135,14 +135,10 @@ public class Login extends JPanel {
                 int i = 0;
                 for (i = 0; i < accountLength; i++) {
                     String p = String.valueOf(passwordField.getPassword());
+                    System.out.println(accounts.get(i).getUsername()+", HI "+ accounts.get(i).getPassword());
                     boolean correctUsername = nameField.getText().equalsIgnoreCase(accounts.get(i).getUsername());
                     boolean available = correctUsername && p.equals(accounts.get(i).getPassword());
                     if(available){
-                        /*
-                        JOptionPane.showMessageDialog(null, "Successfully login",
-                                "On progress",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        */
                         account = accounts.get(i);
                         break;
                     }

@@ -10,10 +10,11 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import mainFrame.Controller.MongoDB;
 import mainFrame.Controller.Objects.Account;
+import mainFrame.Controller.Objects.Cart;
 import mainFrame.Panels.Methdos.*;
 import mainFrame.Panels.SubPanels.Login;
+import mainFrame.Panels.SubPanels.MyCart;
 import mainFrame.Panels.SubPanels.SignUp;
 import mainFrame.Panels.SubPanels.UserInfo;
 import mainFrame.Panels.navigations.Categories;
@@ -31,15 +32,16 @@ public class SecondPanel extends JLayeredPane {
 	final int WIDTH = 1215;
 	final int HEIGHT = 714;
 	
-	String searchText;
+
 	BackgroundPanel backgroundImage = new BackgroundPanel();
 
 	OutputBody outputBody = new OutputBody();
-	Homes homeBody = new Homes();
+	JLayeredPane body = body(true);
+	Homes homeBody;
 	Categories categoriesBody = new Categories();
 	Overview overviewBody = new Overview();
 	Contacts contactBody = new Contacts();
-	JLayeredPane body = body();
+
 	
 	JButton LogIn;
 	JButton SignIn;
@@ -59,25 +61,28 @@ public class SecondPanel extends JLayeredPane {
 		this.removeAll();
 		this.add(backgroundImage, Integer.valueOf(0));
 		this.add(Header(), Integer.valueOf(1));
-		this.add(searchField(), Integer.valueOf(2));
 		this.add(username, Integer.valueOf(2));
+		outputBody.add(homeBody);
 		this.add(body,Integer.valueOf(1));
 		this.setVisible(true);
 	}
-	
-	private JLayeredPane body() {
+	private JLayeredPane body(boolean addNow) {
 		JLayeredPane body = new JLayeredPane();
+
 		body.setBounds(0, 80, WIDTH, 614);
 		body.setOpaque(false);
 		body.setBackground(Color.red);
 		body.setLayout(null);
-		
+
 		outputBody.removeAll();
-		outputBody.add(homeBody);
+
 		body.add(outputBody, Integer.valueOf(1));
 		body.add(NavBar(), Integer.valueOf(1));
 		body.add(NavBarBTN(), Integer.valueOf(2));
 		body.add(UserInfo(), Integer.valueOf(1));
+
+		homeBody = new Homes(backgroundImage, body, UserInfo(), (SecondPanel) PANE(), account);
+		outputBody.add(homeBody);
 
 		return body;
 	}
@@ -248,7 +253,7 @@ public class SecondPanel extends JLayeredPane {
 					PANE().repaint();
 
 				}catch (NullPointerException ex){
-					System.err.println("edi wew");
+					System.err.println(ex);
 				}
 			}});
 	}
@@ -256,78 +261,21 @@ public class SecondPanel extends JLayeredPane {
 	private SignUp SignUpPane() {
         return new SignUp();
 	}
-	
-	private JLabel SearchBar() {
-		RoundedLines label = new RoundedLines("",35);
-		
-		label.setBounds(640,23,340,35);
-		label.setFont(setFontSGlacial(20));
-		label.setBackground(new Color(0xFFFFFF));
-		label.setForeground(new Color(0xFFFFFF));
-		label.setLayout(null);
-		
-		ImageIcon icon = new ImageIcon(new ImageIcon("Images/mag_icon.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
-		
-		JLabel search =new JLabel();
-		search.setIcon(icon);
-		search.setBounds(10,5,25,25);
-        search.setOpaque(false);
-		search.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		search.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	System.out.println(searchText+" HI");
 
-            }});
-		label.add(search);
-		return label;
-	}
-	
-	private JTextField searchField() {
-		
-		JTextField textField = new JTextField();
-		textField.setBounds(680, 25, 260, 30);
-		textField.setOpaque(false);
-		textField.setFont(setFontSGlacial_BOLD(18));
-		textField.setBorder(null);
-		textField.setVisible(true);
-		textField.setText("Search");
-		textField.setForeground(Color.WHITE);
-		textField.setToolTipText("Search");
-		
-		textField.addKeyListener(new KeyAdapter(){
-		    public void keyTyped(KeyEvent evt){
-		    	searchText = ((JTextField)evt.getSource()).getText() + String.valueOf(evt.getKeyChar());
-		    }
-		 
-		});
-		textField.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if(textField.getText().equals("Search")) {
-					textField.setText("");
-				}
-				
-			}
-		});
-		return textField;
-	}
 
 	public void backHome(){
 		PANE().remove(body);
-		body = body();
+		body = body(false);
 		PANE().add(body,Integer.valueOf(1));
 
 		ImageIcon icon = new ImageIcon(new ImageIcon("Images/Background-second.png").getImage().getScaledInstance(1200, 700, Image.SCALE_SMOOTH));
 		backgroundImage.setIcon(icon);
 		backgroundImage.setBounds(0,-15,1215,734);
 		backgroundImage.revalidate();
-
 		LogIn.setOpaque(false);
 		SignIn.setOpaque(false);
 
 		PANE().revalidate();
-		body.revalidate();
-		body.repaint();
 	}
 
 	private JPanel UserInfo() {
@@ -364,9 +312,45 @@ public class SecondPanel extends JLayeredPane {
 		profile.setFont(setFontSGlacial(20));
 		profile.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+		cart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try{
+					Cart[] cart = account.getCart();
+					MyCart myCartClass = new MyCart(cart, account.getUsername(), (SecondPanel) PANE());
+					//Cart[] cart = null;
+					ImageIcon icon = new ImageIcon(new ImageIcon("Images/user_profile.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
+					backgroundImage.setIcon(icon);
+					backgroundImage.setBounds(0,-21,1215,734);
+					backgroundImage.revalidate();
+
+					body.removeAll();
+					body.setLayout(new BorderLayout());
+					body.add(myCartClass, BorderLayout.CENTER);
+					body.revalidate();
+					myCartClass.getRemoveBTN().addActionListener(ep->{
+						myCartClass.revalidate();
+						myCartClass.repaint();
+					});
+
+				}catch (Exception ex){
+					System.err.println(ex);
+					JOptionPane.showMessageDialog(null, "Please LOGIN first",
+							"Luh", JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		});
+
 		profile.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				UserInfo userInfo = new UserInfo(account);
+				if(account == null){
+					JOptionPane.showMessageDialog(null, "Please login first",
+							"Login First",
+							JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				UserInfo userInfo = new UserInfo(getAccount());
 				ImageIcon icon = new ImageIcon(new ImageIcon("Images/user_profile.png").getImage().getScaledInstance(1200,700, Image.SCALE_SMOOTH));
 				backgroundImage.setIcon(icon);
 				backgroundImage.setBounds(0,-21,1215,734);
@@ -384,7 +368,6 @@ public class SecondPanel extends JLayeredPane {
 				userInfo.getBackHome().addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 						backHome();
-						System.out.println("WHY YOU NOT WORKING?");
 					}});
 			}
 		});
@@ -394,7 +377,14 @@ public class SecondPanel extends JLayeredPane {
 		
 		return panel;
 	}
-	
+
+	public Account getAccount(){
+		return account;
+	}
+	public void setAccount(Account account){
+		this.account = account;
+	}
+
 	private JPanel NavBar() {
 		JPanel panel = new JPanel();
 		panel.setOpaque(true);
@@ -413,7 +403,7 @@ public class SecondPanel extends JLayeredPane {
 		panel.setVisible(true);
 		panel.setOpaque(false);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER,25,10));
-		
+
 		NavBarLabel home = new NavBarLabel("HOME",25);
 		home.setPreferredSize(new Dimension(200,30));
 		home.setSelected(true);
@@ -608,7 +598,7 @@ public class SecondPanel extends JLayeredPane {
 		header.setBounds(0,0,1215,80);
 		header.add(LogoName());
 		header.setLayout(null);
-		header.add(SearchBar());
+
 		return header;
 	}
 
